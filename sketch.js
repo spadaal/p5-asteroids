@@ -28,14 +28,10 @@ function handleKeyboard() {
     firing = keyIsDown(32);
 }
 
-function draw() {
-    background(0);
-    stroke(255);
-    handleKeyboard();
+function update() {
     ship.update(rot, thrust, firing);
-
-    //Collision check bullets vs asteroids
-    for (let i = 0;i<ship.lasers.length;i++) {
+     //Collision check bullets vs asteroids
+     for (let i = 0;i<ship.lasers.length;i++) {
         let laser = ship.lasers[i];
         for (let j = 0;j<asteroids.length;j++) {
             if (laser.hits(asteroids[j])) {
@@ -57,8 +53,15 @@ function draw() {
             }
         }
     }
-
     for (let a of asteroids) a.update();
+}
+
+function draw() {
+    background(0);
+    stroke(255);
+    handleKeyboard();
+    update();
+
     ship.draw();
     for (let a of asteroids) a.draw();
 }
