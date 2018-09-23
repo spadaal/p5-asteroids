@@ -35,6 +35,15 @@ function draw() {
     ship.update(rot, thrust, firing);
 
     //Collision check bullets vs asteroids
+    for (let i = 0;i<ship.lasers.length;i++) {
+        let laser = ship.lasers[i];
+        for (let j = 0;j<asteroids.length;j++) {
+            if (laser.hits(asteroids[j])) {
+                //Remove laser
+                ship.lasers.splice(i,1);
+            }
+        }
+    }
 
     for (let a of asteroids) a.update();
     ship.draw();

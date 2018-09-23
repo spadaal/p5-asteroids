@@ -48,9 +48,11 @@ class Ship {
         rotate(this.direction);
         noFill();
         triangle(this.r * 2, 0, -this.r, -this.r, -this.r, this.r);
+        if (this.acc.mag()>0) {
+            triangle(-this.r *random(1.3,2.2), 0, -this.r, -this.r/2, -this.r, this.r/2);
+        }
         pop();
         for (let laser of this.lasers) {
-            console.info("drawing "+ laser.pos);
             laser.draw();
         }
     }

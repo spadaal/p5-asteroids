@@ -16,4 +16,8 @@ class Laser {
         ellipse(this.pos.x, this.pos.y, 2, 2);
         pop();
     }
+
+    hits(target) {
+        return (dist(this.pos.x,this.pos.y,target.pos.x,target.pos.y)<2+target.r);
+    }
 }
