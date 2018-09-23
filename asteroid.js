@@ -11,8 +11,8 @@ class Asteroid {
         this.pos = this.pos.add(this.vel);
         if (this.pos.x+this.r < 0) this.pos.x = width;
         if (this.pos.x-this.r > width) this.pos.x = 0;
-        if (this.pos.y < 0) this.pos.y = height;
-        if (this.pos.y > height) this.pos.y = 0;
+        if (this.pos.y+this.r < 0) this.pos.y = height;
+        if (this.pos.y-this.r > height) this.pos.y = 0;
     }
 
     draw() {
