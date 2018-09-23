@@ -41,6 +41,19 @@ function draw() {
             if (laser.hits(asteroids[j])) {
                 //Remove laser
                 ship.lasers.splice(i,1);
+                //Split the asteroid or destroy it
+                
+                if (asteroids[j].r>6) {
+                    let a1 = new Asteroid(null,null,asteroids[j].r/2);
+                    a1.pos = asteroids[j].pos.copy();
+                    a1.vel = asteroids[j].vel.copy().rotate(PI/9);
+                    let a2 = new Asteroid(null,null,asteroids[j].r/2);
+                    a2.pos = asteroids[j].pos.copy();
+                    a2.vel = asteroids[j].vel.copy().rotate(-PI/9);
+                    asteroids.push(a1);
+                    asteroids.push(a2);
+                }
+                asteroids.splice(j,1);
             }
         }
     }
