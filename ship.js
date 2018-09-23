@@ -6,23 +6,40 @@ class Ship {
         this.brain = brain;
         this.acc = createVector(0, 0);
         this.vel = createVector(0, 0);
-        this.maxAcc=2;
-        this.maxVel=6;
-        this.r=8;
+        this.maxAcc = 2;
+        this.maxVel = 6;
+        this.r = 8;
+
+        this.lasers = [];
+        this.maxLasers = 5;
     }
 
-    update(rot, thrust) {
-        this.direction += rot;
-        this.acc=(createVector(1,0).rotate(this.direction).setMag(thrust));
-        if (this.acc.mag()>this.maxAcc) this.acc.setMag(this.maxAcc);
-        this.vel = this.vel.add(this.acc);
-        if (this.vel.mag()>this.maxVel) this.vel.setMag(this.maxVel);
-        this.pos = this.pos.add(this.vel);
-        if (this.pos.x<0) this.pos.x=width;
-        if (this.pos.x>width) this.pos.x=0;
-        if (this.pos.y<0) this.pos.y=height;
-        if (this.pos.y>height) this.pos.y=0;
+    update(rot, thrust, firing) {
 
+        this.direction += rot;
+        this.acc = (createVector(1, 0).rotate(this.direction).setMag(thrust));
+        if (this.acc.mag() > this.maxAcc) this.acc.setMag(this.maxAcc);
+        this.vel = this.vel.add(this.acc);
+        if (this.vel.mag() > this.maxVel) this.vel.setMag(this.maxVel);
+        this.pos = this.pos.add(this.vel);
+        if (this.pos.x < 0) this.pos.x = width;
+        if (this.pos.x > width) this.pos.x = 0;
+        if (this.pos.y < 0) this.pos.y = height;
+        if (this.pos.y > height) this.pos.y = 0;
+        if (firing) {
+            this.fire();
+        }
+        for (let i = 0; i < this.lasers.length; i++) {
+            if (this.lasers[i].update()) {
+                this.lasers.splice(i, 1);
+            }
+        }
+    }
+
+    fire() {
+        if (this.lasers.length < this.maxLasers) {
+            this.lasers.push(new Laser(this.pos, this.direction));
+        }
     }
 
     draw() {
@@ -30,7 +47,11 @@ class Ship {
         translate(this.pos);
         rotate(this.direction);
         noFill();
-        triangle(this.r*2,0,-this.r,-this.r,-this.r,this.r);
+        triangle(this.r * 2, 0, -this.r, -this.r, -this.r, this.r);
         pop();
+        for (let laser of this.lasers) {
+            console.info("drawing "+ laser.pos);
+            laser.draw();
+        }
     }
 }

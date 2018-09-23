@@ -3,6 +3,8 @@ let asteroids=[];
 
 let rot = 0;
 let thrust = 0;
+let firing = false;
+
 function setup() {
     createCanvas(800, 600);
     ship = new Ship(createVector(width / 2, height / 2), 0, 100);
@@ -22,13 +24,18 @@ function handleKeyboard() {
     } else {
         thrust = 0;
     }
+    
+    firing = keyIsDown(32);
 }
 
 function draw() {
     background(0);
     stroke(255);
     handleKeyboard();
-    ship.update(rot, thrust);
+    ship.update(rot, thrust, firing);
+
+    //Collision check bullets vs asteroids
+
     for (let a of asteroids) a.update();
     ship.draw();
     for (let a of asteroids) a.draw();
