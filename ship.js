@@ -13,7 +13,7 @@ class Ship {
         this.acc.add(createVector(1,0).rotate(this.direction).setMag(thrust));
         if (this.acc.mag()>1) this.acc.setMag(1);
         this.vel = this.vel.add(this.acc);
-        if (this.vel.mag()>5) this.vel.setMag(5);
+        if (this.vel.mag()>10) this.vel.setMag(10);
         this.pos = this.pos.add(this.vel);
         if (this.pos.x<0) this.pos.x=width;
         if (this.pos.x>width) this.pos.x=0;
@@ -25,6 +25,7 @@ class Ship {
     draw() {
         translate(this.pos);
         rotate(this.direction);
+        noFill();
         triangle(10,0,-5,-5,-5,5);
     }
 }
