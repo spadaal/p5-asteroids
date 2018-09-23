@@ -6,8 +6,8 @@ class Ship {
         this.brain = brain;
         this.acc = createVector(0, 0);
         this.vel = createVector(0, 0);
-        this.maxAcc=1.5;
-        this.maxVel=5;
+        this.maxAcc=2;
+        this.maxVel=6;
         this.r=8;
     }
 
