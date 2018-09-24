@@ -12,6 +12,8 @@ class Ship {
 
         this.lasers = [];
         this.maxLasers = 5;
+        this.lastFired=0;
+        this.laserCooldown=7;
     }
 
     update(rot, thrust, firing) {
@@ -26,8 +28,11 @@ class Ship {
         if (this.pos.x > width) this.pos.x = 0;
         if (this.pos.y < 0) this.pos.y = height;
         if (this.pos.y > height) this.pos.y = 0;
-        if (firing) {
+        if (firing && this.lastFired>this.laserCooldown) {
             this.fire();
+            this.lastFired=0;
+        } else {
+            this.lastFired++;
         }
         for (let i = 0; i < this.lasers.length; i++) {
             if (this.lasers[i].update()) {
@@ -40,6 +45,10 @@ class Ship {
         if (this.lasers.length < this.maxLasers) {
             this.lasers.push(new Laser(this.pos, this.direction));
         }
+    }
+
+    hits(target) {
+        return (dist(this.pos.x,this.pos.y,target.pos.x,target.pos.y)<this.r+target.r);
     }
 
     draw() {

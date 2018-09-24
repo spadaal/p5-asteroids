@@ -4,11 +4,16 @@ let asteroids=[];
 let rot = 0;
 let thrust = 0;
 let firing = false;
+let score=0;
 
 function setup() {
     createCanvas(800, 600);
+    newGame();
+}
+
+function newGame() {
     ship = new Ship(createVector(width / 2, height / 2), 0, 100);
-    for (var i=0;i<16;i++) asteroids.push(new Asteroid(null,null,random(6,32)));
+    for (var i=0;i<10;i++) asteroids.push(new Asteroid(null,null,random(16,32)));
 }
 
 function handleKeyboard() {
@@ -30,6 +35,13 @@ function handleKeyboard() {
 
 function update() {
     ship.update(rot, thrust, firing);
+    //Collision check ship vs asteroids
+    for (let j = 0;j<asteroids.length;j++) {
+        if (ship.hits(asteroids[j])) {
+            ship.health-=floor(asteroids[j].r);
+            asteroidHit(j);
+        }
+    }
      //Collision check bullets vs asteroids
      for (let i = 0;i<ship.lasers.length;i++) {
         let laser = ship.lasers[i];
@@ -38,22 +50,29 @@ function update() {
                 //Remove laser
                 ship.lasers.splice(i,1);
                 //Split the asteroid or destroy it
-                
-                if (asteroids[j].r>6) {
-                    let a1 = new Asteroid(null,null,asteroids[j].r/2);
-                    a1.pos = asteroids[j].pos.copy();
-                    a1.vel = asteroids[j].vel.copy().rotate(PI/9);
-                    let a2 = new Asteroid(null,null,asteroids[j].r/2);
-                    a2.pos = asteroids[j].pos.copy();
-                    a2.vel = asteroids[j].vel.copy().rotate(-PI/9);
-                    asteroids.push(a1);
-                    asteroids.push(a2);
-                }
-                asteroids.splice(j,1);
+                asteroidHit(j);
+                score++;
             }
         }
     }
     for (let a of asteroids) a.update();
+    if (ship.health<0 || asteroids.length<=0) {
+        newGame();
+    }
+}
+
+function asteroidHit(j) {
+    if (asteroids[j].r>6) {
+        let a1 = new Asteroid(null,null,asteroids[j].r/2);
+        a1.pos = asteroids[j].pos.copy();
+        a1.vel = asteroids[j].vel.copy().rotate(PI/9);
+        let a2 = new Asteroid(null,null,asteroids[j].r/2);
+        a2.pos = asteroids[j].pos.copy();
+        a2.vel = asteroids[j].vel.copy().rotate(-PI/9);
+        asteroids.push(a1);
+        asteroids.push(a2);
+    }
+    asteroids.splice(j,1);
 }
 
 function draw() {
@@ -64,4 +83,6 @@ function draw() {
 
     ship.draw();
     for (let a of asteroids) a.draw();
+    noFill();
+    text("Health: " + ship.health + " Score: " + score,10,10);
 }
