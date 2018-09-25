@@ -1,9 +1,8 @@
 class Ship {
-    constructor(pos, direction, health, brain) {
+    constructor(pos, direction, health) {
         this.pos = pos;
         this.direction = direction;
         this.health = health;
-        this.brain = brain;
         this.acc = createVector(0, 0);
         this.vel = createVector(0, 0);
         this.maxAcc = 2;
