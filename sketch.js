@@ -13,9 +13,9 @@ function setup() {
 
 function handleKeyboard() {
     if (keyIsDown(LEFT_ARROW)) {
-        rot = -PI / 18;
+        rot = -PI / 21;
     } else if (keyIsDown(RIGHT_ARROW)) {
-        rot = PI / 18;
+        rot = PI / 21;
     } else {
         rot = 0;
     }
